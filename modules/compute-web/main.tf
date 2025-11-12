@@ -47,8 +47,13 @@ resource "aws_launch_template" "web" {
   image_id      = data.aws_ami.al2023.id
   instance_type = var.instance_type
   key_name      = var.key_name
-  vpc_security_group_ids = [var.web_sg_id]
+  # vpc_security_group_ids = [var.web_sg_id] 
   user_data     = base64encode(var.user_data)
+
+  network_interfaces {
+    security_groups = [var.web_sg_id]
+    associate_public_ip_address = false
+  }
 
   tag_specifications {
     resource_type = "instance"

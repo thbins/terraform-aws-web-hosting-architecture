@@ -20,7 +20,7 @@ module "compute_web" {
   source            = "../../modules/compute-web"
   vpc_id            = module.network.vpc_id
   alb_subnets       = module.network.public_subnet_ids
-  instance_subnets  = module.network.public_subnet_ids   # ▶ NAT OFF 상태: 퍼블릭 서브넷에서 테스트
+  instance_subnets  = module.network.web_subnet_ids   # ▶ NAT OFF 상태: 퍼블릭 서브넷에서 테스트 후, NAT ON으로 변경함.
   alb_sg_id         = module.security.alb_public_sg_id
   web_sg_id         = module.security.web_sg_id
   key_name          = var.key_name
