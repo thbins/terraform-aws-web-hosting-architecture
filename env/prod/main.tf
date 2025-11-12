@@ -10,3 +10,8 @@ module "network" {
   db_subnets        = var.db_subnets
   enable_nat_gateway= var.enable_nat_gateway
 }
+
+module "security" {
+  source = "../../modules/security"
+  vpc_id = module.network.vpc_id
+}
