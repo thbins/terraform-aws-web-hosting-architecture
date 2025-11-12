@@ -15,3 +15,13 @@ module "security" {
   source = "../../modules/security"
   vpc_id = module.network.vpc_id
 }
+
+module "compute_web" {
+  source            = "../../modules/compute-web"
+  vpc_id            = module.network.vpc_id
+  alb_subnets       = module.network.public_subnet_ids
+  instance_subnets  = module.network.public_subnet_ids   # ▶ NAT OFF 상태: 퍼블릭 서브넷에서 테스트
+  alb_sg_id         = module.security.alb_public_sg_id
+  web_sg_id         = module.security.web_sg_id
+  key_name          = var.key_name
+}
