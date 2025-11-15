@@ -21,6 +21,16 @@ variable "max"              {
                               default = 4 
                             }
 
+variable "enable_https"    { 
+  type = bool   
+  default = false # 나중에 HTTPS 활성화할 경우, true로 변경
+}
+variable "certificate_arn" { type = string }  # ap-northeast-2 ACM ARN
+variable "ssl_policy"      { 
+  type = string 
+  default = "ELBSecurityPolicy-2016-08"
+}
+
 variable "user_data" {
   type    = string
   default = <<-EOF
