@@ -17,4 +17,9 @@ variable "enable_nat_gateway" {
   default = false
 }
 
+variable "enable_https"    { 
+  type = bool   
+  default = true 
+}
+variable "certificate_arn" { type = string }
 variable "key_name" { type = string }

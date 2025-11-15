@@ -24,4 +24,6 @@ module "compute_web" {
   alb_sg_id         = module.security.alb_public_sg_id
   web_sg_id         = module.security.web_sg_id
   key_name          = var.key_name
+  enable_https    = var.enable_https
+  certificate_arn = var.certificate_arn
 }
