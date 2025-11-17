@@ -27,3 +27,20 @@ module "compute_web" {
   enable_https    = var.enable_https
   certificate_arn = var.certificate_arn
 }
+
+module "compute_app" {
+  source            = "../../modules/compute-app"
+
+  vpc_id            = module.network.vpc_id
+  alb_subnets       = module.network.app_subnet_ids
+  instance_subnets  = module.network.app_subnet_ids
+
+  app_alb_sg_id     = module.security.app_alb_sg_id
+  app_sg_id         = module.security.app_sg_id
+
+  key_name          = var.key_name
+  # instance_type   = "t3.micro"
+  # desired         = 2
+  # min             = 2
+  # max             = 4
+}

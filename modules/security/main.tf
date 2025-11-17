@@ -45,3 +45,47 @@ resource "aws_vpc_security_group_ingress_rule" "alb443" {
   from_port         = 443
   to_port           = 443
 }
+
+# App Internal ALB SG (포트 80, from Web SG)
+resource "aws_security_group" "app_alb_internal" {
+  name   = "alb-internal-app"
+  vpc_id = var.vpc_id
+  tags   = { Name = "alb-internal-app" }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "app_alb80_from_web" {
+  security_group_id            = aws_security_group.app_alb_internal.id
+  referenced_security_group_id = aws_security_group.web.id  # 기존 web SG
+  ip_protocol = "tcp"
+  from_port  = 80
+  to_port    = 80
+}
+
+# App Instance SG (포트 8080, from App-ALB)
+resource "aws_security_group" "app" {
+  name   = "app"
+  vpc_id = var.vpc_id
+  tags   = { Name = "app" }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "app8080_from_app_alb" {
+  security_group_id            = aws_security_group.app.id
+  referenced_security_group_id = aws_security_group.app_alb_internal.id
+  ip_protocol = "tcp"
+  from_port  = 8080
+  to_port    = 8080
+}
